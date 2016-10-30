@@ -1,5 +1,13 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+group = GROUP
+
+boolean isReleaseBuild = gradle.startParameter.taskNames.contains('bintrayUpload')
+version = isReleaseBuild ? VERSION : "$VERSION-SNAPSHOT"
+logger.info("RxAndroid using version=$project.version")
 
 android {
     compileSdkVersion 24
@@ -17,4 +25,50 @@ android {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile 'com.android.support:support-annotations:25.0.0'
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            packaging 'aar'
+            groupId GROUP
+            artifactId "view"
+            version VERSION
+            name NAME
+            url SITE
+            inceptionYear '2016'
+            licenses {
+                license {
+                    name 'MIT'
+                    url 'https://raw.githubusercontent.com/neworld/android-helpers/master/LICENSE'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                connection GIT
+                developerConnection GIT
+                url SITE
+            }
+        }
+    }
+}
+
+bintray {
+    configurations = ['archives']
+
+    publish = true
+
+    pkg {
+        repo = 'maven'
+        name = NAME
+        userOrg = 'neworld'
+        licenses = ['MIT']
+        vcsUrl = GIT
+        websiteUrl = SITE
+    }
+}
+
+if (System.getenv('BINTRAY_USER') && System.getenv('BINTRAY_KEY')) {
+    bintray.user = System.getenv('BINTRAY_USER')
+    bintray.key = System.getenv('BINTRAY_KEY')
 }
