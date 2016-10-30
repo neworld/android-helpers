@@ -9,6 +9,7 @@ android:
     - platform-tools
     - android-24
     - build-tools-24.0.3
+    - extra-android-support
 
 # as per http://blog.travis-ci.com/2014-12-17-faster-builds-with-container-based-infrastructure/
 sudo: false
