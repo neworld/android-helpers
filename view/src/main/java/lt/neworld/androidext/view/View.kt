@@ -1,4 +1,4 @@
-package neworld.lt.extensions.view
+package lt.neworld.androidext.view
 
 import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
